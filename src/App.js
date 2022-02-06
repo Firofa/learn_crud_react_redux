@@ -1,23 +1,40 @@
-import logo from './logo.svg';
 import './App.css';
+import { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { addUser } from './features/Users';
 
 function App() {
+
+  const dispatch = useDispatch();
+  const userList = useSelector((state) => state.users.value);
+
+  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
+
+  const latest_id = userList[userList.length - 1].id;
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+      {" "}
+      <div className='addUser'>
+        <input type="text" placeholder='Name...' onChange={(e) => setName(e.target.value)} />
+        <input type="text" placeholder='Username...' onChange={(e) => setUsername(e.target.value)} />
+        <button 
+          onClick={() => dispatch(addUser({id: latest_id + 1, name , username }))}
         >
-          Learn React
-        </a>
-      </header>
+        Add User
+        </button>
+      </div>
+      <div className='displayUser'>
+        {userList.map((user) => {
+          return (
+          <div>
+            <h1>{user.name}</h1>
+            <h2>{user.username}</h2>
+          </div>
+          );
+        })}
+      </div>
     </div>
   );
 }
