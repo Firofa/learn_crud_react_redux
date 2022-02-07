@@ -1,7 +1,7 @@
 import './App.css';
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { addUser } from './features/Users';
+import { addUser, deleteUser, updateUsername } from './features/Users';
 
 function App() {
 
@@ -10,6 +10,7 @@ function App() {
 
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");
+  const [newUsername, setNewUsername] = useState("");
 
   const latest_id = userList[userList.length - 1].id;
 
@@ -25,12 +26,26 @@ function App() {
         Add User
         </button>
       </div>
-      <div className='displayUser'>
+      <div className='displayUsers'>
         {userList.map((user) => {
           return (
           <div>
             <h1>{user.name}</h1>
             <h2>{user.username}</h2>
+            <input 
+              type="text" 
+              placeholder='New Username...' 
+              onChange={(e) => setNewUsername(e.target.value)} 
+            />
+            <button
+            onClick={() => {dispatch(updateUsername({id: user.id, username: newUsername}))}}
+            >
+              Update User</button>
+            <button 
+            onClick={() => { dispatch(deleteUser({id: user.id}))}}
+            >
+              Delete User
+            </button>
           </div>
           );
         })}
